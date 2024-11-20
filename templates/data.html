@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Data Page</title>
 </head>
 <body>
-    
+    <h1>Data Display Page</h1>
+    <img src="{{ url_for('static', filename='data.jpg') }}" alt="Data Image" style="width:300px;"><br>
+    <p>Here is some sample data:</p>
+    <ul>
+        <li>Data Point 1: 100</li>
+        <li>Data Point 2: 200</li>
+        <li>Data Point 3: 300</li>
+    </ul>
+    <a href="home.html">Go back Home</a>
 </body>
 </html>
+
+//change and input actual data using mongodb, for now this is the basic outline

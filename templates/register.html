@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>Register Page</title>
 </head>
 <body>
     <h1>User Registration</h1>
     <form method="POST" action="/register">
         <lablel for="username">Username:</lablel>
-        <input type="text" id="username" name="username" required>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="passsword" id="password" name="password" required><br><br>
         <input type="submit" value="Register">
     </form>
-    <a href="/users">View Registered Users</a>
+    <a href="home.html">Go back Home</a>
 </body>
 </html>
