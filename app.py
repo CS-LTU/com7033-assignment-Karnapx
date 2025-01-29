@@ -1,25 +1,11 @@
 #this is the back end!
 from flask import Flask, render_template, request, redirect, url_for
-import sqlite3 
+import sqlalchemy
+import flask_sqlalchemy
+import sqlite3
 import os
 
 app = Flask(__name__)
-
-#function to connect the sqlite database and initislize the table
-def init_db():
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id iINTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP        
-    )
-    ''') 
-conn.commit()
-conn.close()
-
-users = []
 
 #route for the home page
 @app.route('/')
@@ -75,7 +61,16 @@ if __name__ == '__main__':
 def data():
     return render_template('data.html') 
 
-# Route to all pages have been inputted
+# linking sql database to backend
+folder_path = r'C:\Users\Rican\OneDrive\Desktop\University🎓\MSc Data Science and AI\SEM 1\COM7033 - Secure Software Development\SSD_Project\com7033-assignment-Karnapx\Databases'
+db_path = os.path.join(folder_path, 'test.db')
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM healthcare;")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
+conn.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True, use_reloader=False)
