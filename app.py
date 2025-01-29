@@ -15,11 +15,10 @@ def init_db():
         username TEXT NOT NULL
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP        
     )
-    ''')
+    ''') 
 conn.commit()
 conn.close()
 
-#store users in memory
 users = []
 
 #route for the home page
@@ -43,11 +42,32 @@ def register():
     return render_template('register.html', fname='Register Here')
 
 #route to handle user registeration
-@app.route('/register.html', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def do_register():
     username = request.form['username']
 
-    #insert the new user into the database
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("INSTERT INTO users (username) VALUES (?)", (username,))
+    conn.commit()
+    conn.close()
+
+    return redirect('/users')
+
+#route for registered users
+@app.route('/users')
+def users():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT username, created_at FROM users")
+    users = cursor.fetchall()
+    conn.close()
+
+    return render_template('users.html', users=users)
+
+if __name__ == '__main__':
+    init_db()
+    app.run(port=5000, debug=False)
 
 
 # Route for the data page
@@ -64,7 +84,6 @@ def run_flask():
     display(Javascript('window.open("/proxy/5000/","_blank")'))
     app.run(host='0.0.0.0', port=5000)
 
-#ask about JS 
 run_flask
 
 
