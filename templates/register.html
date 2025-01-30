@@ -7,14 +7,26 @@
 </head>
 <body>
     <h1>User Registration</h1>
+    <p>Register if you have not or please use the Staff log in.</p>
+
     <form method="POST" action="/register">
-        <lablel for="username">Username:</lablel>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="passsword" id="password" name="password" required><br><br>
-        <input type="submit" value="Register">
+       <label for="first_name">First Name:</label>
+       <input type="text" id="first_name" name="first_name" required><br>
+
+       <label for="last_name">Last Name:</label>
+       <input type="text" id="last_name" name="last_name" required><br><br>
+
+       <label for="email">Email:</label>
+       <input type="email" id="email" name="email" required><br>
+
+       <label for="password">Password:</label>
+       <input type="password" id="password" name="password" required><br><br>
+
+       <input type="submit" value="Register">
+
     </form>
-    <a href="\users">View Registered Users</a>
+    <br>
+    <a href="users.html">View Registered Users</a>
     <br>
     <br>
     <a href="home.html">Go back Home</a>

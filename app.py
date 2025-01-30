@@ -48,7 +48,7 @@ def do_register():
     conn.commit()
     conn.close()
 
-    return redirect('/users')
+    return redirect('users.html')
 
 @app.route('/users')
 def users():
