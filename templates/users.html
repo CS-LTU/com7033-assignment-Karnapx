@@ -14,8 +14,9 @@
             <th>Email</th>
             <th>Registration Time</th>
         </tr>
+
         {% for user in users %}
-        <tr>
+         <tr>
             <td>{{ user[0] }}</td>
             <td>{{ user[1] }}</td>
             <td>{{ user[2] }}</td>
@@ -23,6 +24,7 @@
         </tr>
         {% endfor %}
     </table>
+
     <a href="register.html">Back to Registration</a>
 </body>
 </html>
