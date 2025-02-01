@@ -12,14 +12,11 @@ users = []
 # function to connect to the SQLite database and intialize the table
 def init_db():
     conn = sqlite3.connect('users.db')
-    cursor = conn.cursor
+    cursor = conn.cursor()
     cursor.execute('''
-    CREATE TABLE IF NOT EXSISTS users (
+    CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name TEXR NOT NULL,
-        email TEXT NOT NULL,
-        password TEXT NOT NULL,
+        username TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
@@ -46,35 +43,25 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html')
 
+
 #ROUTE TO REGISTERATION PAGE
 @app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        password = request.form['password']
-        hashed_passsword = generate_password_hash(password, method='pbkdf2:sha256')
+def do_register():
+   username = request.form['username']
+   conn = sqlite3.connect('users.db')
+   cursor = conn.cursor()
+   cursor.execute("INSERT INTO users (username) VALUES (?)", (username,))
+   conn.commit()
+   conn.close()
 
-    #INSERT THE NEW USER INTO THE DATABASE
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-          INSERT INTO users (first_name, last_name, email, password) 
-          VALUES (?, ?, ?, ?)
-    ''', (first_name, last_name, email, hashed_passsword))
-    conn.commit()
-    conn.close()
-
-    return redirect('/users')
-    return render_template('register.html')
+   return redirect('/users')
 
 #ROUTE TO DISPLAY REGISTERED USERS
 @app.route('/users')
-def users():
+def list_users():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT first_name, last_name, email, created_at FROM users")
+    cursor.execute("SELECT username, created_at FROM users")
     users = cursor.fetchall()
     conn.close()
 
@@ -82,4 +69,4 @@ def users():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0',port=8080, debug=True) 
+    app.run(host='0.0.0.0',port=5000, debug=True) 
