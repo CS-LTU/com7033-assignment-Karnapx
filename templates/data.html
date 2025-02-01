@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Data Display Page</h1>
-    <img src="C:\Users\Rican\OneDrive\com7033-assignment-Karnapx\static\images\data.jpg" alt="Data Image" style="width:300px;"><br>
+    <img src="{{ url_for('static', filename='images/data.jpg') }}" alt="Data Image" style="width:300px;"><br>
     <p>Here is some sample data:</p>
     <ul>
         <li>Data Point 1: 100</li>

@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registered Users</title>
+    <title>Registerd Users</title>
 </head>
 <body>
     <h1>Registered Users</h1>
-    <table>
+    <table boarder="1">
         <tr>
+            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Registration Time</th>
+            <th>Created At</th>
+            <th>Actions</th>
         </tr>
-
         {% for user in users %}
-         <tr>
+        <tr>
             <td>{{ user[0] }}</td>
             <td>{{ user[1] }}</td>
             <td>{{ user[2] }}</td>
             <td>{{ user[3] }}</td>
+            <td>{{ user[4] }}</td>
+        <td>
+            <a href="/delete/{{ user[0]}}" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+        </td>
         </tr>
         {% endfor %}
     </table>
-
-    <a href="register.html">Back to Registration</a>
+    <br>
+    <a href="register.html">Register a new user</a>
 </body>
 </html>
