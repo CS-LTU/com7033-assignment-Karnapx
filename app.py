@@ -7,21 +7,24 @@ import os
 
 app = Flask(__name__)
 
-users = []
-
-# function to connect to the SQLite database and intialize the table
+#function to connect to the 2nd SQLITE database
 def init_db():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    CREATE TABLE IF NOT EXISTS USERS (
+        id INTERGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        password TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
     conn.commit()
     conn.close()
+
 
 #ROUTE TO HOME PAGE
 @app.route('/')
@@ -43,29 +46,51 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html')
 
-
-#ROUTE TO REGISTERATION PAGE
 @app.route('/register', methods=['GET', 'POST'])
 def do_register():
-   username = request.form['username']
-   conn = sqlite3.connect('users.db')
-   cursor = conn.cursor()
-   cursor.execute("INSERT INTO users (username) VALUES (?)", (username,))
-   conn.commit()
-   conn.close()
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+        cursor.execute('''INSERT INTO users (first_name, last_name, email, password, created_at)
+                     VALUES (?, ?, ?, ?)''', 
+                  (first_name, last_name, email, hashed_password))
+        conn.commit()
+        conn.close()
+    
+    return redirect(url_for('success', first_name=first_name))
+    return render_template('register.html')
 
-   return redirect('/users')
+#ROUTE FOR THE SUCCESS PAGE 
+@app.route('/success/<first_name>')
+def success(first_name):
+    return f"User {first_name} registered successfully!"
 
 #ROUTE TO DISPLAY REGISTERED USERS
 @app.route('/users')
 def list_users():
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT username, created_at FROM users")
+    cursor.execute("SELECT id, first_name, last_name, email, created_at FROM users")
     users = cursor.fetchall()
     conn.close()
-
     return render_template('users.html', users=users)
+
+#route ti delete a user by ID
+@app.route('/delete/<int:user_id>')
+def delete_user(user_id):
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor
+    cursor.execute('DELETE FROM users WHERE id = ?', (user_id))
+    conn.commit
+    conn.close
+    return redirect(url_for('list_users'))
 
 if __name__ == '__main__':
     init_db()
