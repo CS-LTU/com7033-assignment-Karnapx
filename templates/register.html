@@ -8,7 +8,7 @@
 <body>
     <h1>User Registration</h1>
     <p>Register if you have not or please use the Staff log in.</p>
-    <form method="POST" action="/register">
+    <form action="/register" method="POST">
        <label for="first_name">First Name:</label>
        <input type="text" id="first_name" name="first_name" value="{{ request.form['first_name'] }}" required><br>
 
@@ -21,22 +21,23 @@
        <label for="password">Password:</label>
        <input type="password" id="password" name="password" required><br><br>
 
+       <input type="submit" value="Register"
        <button type="submit">Register</button>
     </form>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
+         <ul>
             {% for message in messages %}
             <li>{{ message }}</li>
             {% endfor %}
-        </ul>
+         </ul>
         {% endif %}
     {% endwith %}
     
     <a href="/users">View Registered Users</a>
     <br>
     <br>
-    <a href="/home">Go back Home</a>
+    <a href="/">Go back Home</a>
 </body>
 </html>
